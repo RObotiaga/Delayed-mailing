@@ -1,9 +1,10 @@
 from django.urls import path
 from .views import HomeView, CreateNewsletter, UpdateNewsletter, ReadNewsletter, DeleteNewsletterView, PauseTaskView
+from django.views.decorators.cache import cache_page
 app_name = 'mailing_creation'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('create/', CreateNewsletter.as_view(), name='create_newsletter'),
+    path('create/', cache_page(60)(CreateNewsletter.as_view()), name='create_newsletter'),
     path('newsletter/<int:pk>/', ReadNewsletter.as_view(), name='newsletter_info'),
     path('update/<int:pk>/', UpdateNewsletter.as_view(), name='update_newsletter'),
     path('delete_newsletter/<int:model_id>/', DeleteNewsletterView.as_view(), name='delete_newsletter'),
