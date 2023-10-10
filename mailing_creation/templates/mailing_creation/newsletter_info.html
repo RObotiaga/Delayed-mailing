@@ -1,0 +1,22 @@
+{% extends "mailing_creation/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="card mb-3">
+        <div class="card-header">{{ newsletter.category }}</div>
+        <div class="row g-0">
+{#            <div class="col-md-4">#}
+{#                <img class="img-fluid rounded-start" src="{{ newsletter.img }}" alt="{{ newsletter.image }}">#}
+{#            </div>#}
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h1 class="card-title">{{ newsletter_message.theme }}</h1>
+                    <p class="card-text">{{ newsletter_message.body }}</p>
+                    <p class="card-text"><small class="text-muted">Создано: {{ newsletter.creation_date }}</small></p>
+                    <p class="card-text"><small class="text-muted">Отправка: {{ newsletter.delivery_time }}</small></p>
+                    <p class="card-text"><small class="text-muted">Создатель: {{ newsletter.creator }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

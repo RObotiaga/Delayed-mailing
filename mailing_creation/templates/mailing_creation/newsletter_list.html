@@ -1,0 +1,48 @@
+{% extends "mailing_creation/base.html" %}
+{% load static %}
+
+{% block title %}Главная страница - SubscribeSync{% endblock %}
+
+{% block content %}
+    <div class="row text-center">
+        {% if user.is_authenticated %}
+            <div class="col-12 mb-5">
+                <a class="btn btn-outline-primary" href="{% url 'mailing_creation:create_newsletter' %}">Создать
+                    рассылку</a>
+            </div>
+        {% endif %}
+        {% for newsletter in newsletters %}
+            {% for newsletter_message in newsletter.newslettermessage_set.all %}
+                <div class="col-4 mb-4">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Тема: {{ newsletter_message.theme }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text {% if newsletter.status == 'completed' %}text-success{% elif newsletter.status == 'running' %}text-warning{% elif newsletter.status == 'paused' %} text-danger {% else %}text-primary{% endif %}">
+                                Статус: {{ newsletter.get_status_display }}</p>
+                            <p class="card-text">Периодичность отправки: {{ newsletter.get_frequency_display }}</p>
+                            <p class="card-text">Дата отправки: {{ newsletter.delivery_time }}</p>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'mailing_creation:update_newsletter' newsletter.pk %}"
+                                   class="btn btn-outline-primary btn-block">Изменить</a>
+                                <a href="{% url 'mailing_creation:newsletter_info' newsletter.pk %}"
+                                   class="btn btn-outline-primary btn-block">Подробнее</a>
+                                {% if newsletter.status == 'completed' or newsletter.status == 'paused' %}
+                                    <a href="{% url 'mailing_creation:pause_task' newsletter.id %}"
+                                       class="btn btn-success btn-block">Возобновить</a>
+                                {% else %}
+                                    <a href="{% url 'mailing_creation:pause_task' newsletter.id %}"
+                                       class="btn btn-danger btn-block">Пауза</a>
+                                {% endif %}
+                                <a href="{% url 'mailing_creation:delete_newsletter' newsletter.id %}"
+                                   class="btn btn-danger btn-block">Удалить</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

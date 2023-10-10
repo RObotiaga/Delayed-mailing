@@ -1,0 +1,29 @@
+{% extends "mailing_creation/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="post">
+        <div class="row">
+            <div class="card col-3">
+                <div class="card-body">
+                    <h4 class="card-title">Установить дату</h4>
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    {{ form|crispy }}
+                </div>
+            </div>
+            <div class="card col-3">
+                <div class="card-body">
+                    <h4 class="card-title">Создать письмо</h4>
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    {{ newsletter_message_form|crispy }}
+
+                    <button type="submit" class="btn btn-primary btn-block">Создать</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
