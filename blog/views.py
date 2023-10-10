@@ -7,6 +7,7 @@ from mailing_creation.models import Newsletter, NewsletterMessage
 import random
 from django.db.models import Count
 
+
 class MainPageView(TemplateView):
     template_name = 'blog/main_page.html'
 
@@ -19,7 +20,10 @@ class MainPageView(TemplateView):
             context['posts'] = random_posts
         context['newsletter_count'] = Newsletter.objects.count()
         context['newsletter_active'] = Newsletter.objects.filter(status__in=['created', 'running']).count()
-        context['unique_recipients'] = Newsletter.objects.values('recipients').distinct().count()
+        recipients_count = []
+        for i in Newsletter.objects.all():
+            recipients_count.extend(i.recipients)
+        context['unique_recipients'] = len(set(recipients_count))
         return context
 
 
