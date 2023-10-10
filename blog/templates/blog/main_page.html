@@ -1,0 +1,27 @@
+{% extends 'mailing_creation/base.html' %}
+
+{% block content %}
+    <h1 class="mt-4 mb-4 text-center">Добро пожаловать!</h1>
+    <div class="row mx-auto mb-3">
+        <div class="col-3 text-white bg-info border mx-auto p-lg-3 rounded">Всего рассылок: {{ newsletter_count }}</div>
+        <div class="col-3 text-white bg-info border mx-auto p-lg-3 rounded">Активных рассылок: {{ newsletter_active }}</div>
+        <div class="col-3 text-white bg-info border mx-auto p-lg-3 rounded">Уникальных клиентов: {{ unique_recipients }}</div>
+    </div>
+    {% for post in posts %}
+        <li class="list-group-item bg-light">
+            <div class="row">
+                <div class="col-3 border-right">
+                    <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" class="img-fluid mb-4 rounded">
+                </div>
+                <div class="col-9">
+                    <h2><a href="{% url 'blog:post_detail' slug=post.slug %}">{{ post.title }}</a></h2>
+                    <p>Дата создания: {{ post.created_date }}</p>
+                    <p>Количество просмотров: {{ post.views_count }}</p>
+                    <p>{{ post.content | safe }}</p>
+                </div>
+            </div>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Нет доступных блоговых записей.</li>
+    {% endfor %}
+{% endblock %}
