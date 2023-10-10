@@ -6,7 +6,7 @@ from .models import Newsletter, NewsletterMessage, NewsletterLog
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ('status', 'creator', 'delivery_time', 'frequency',)
+    list_display = ('status', 'creator', 'delivery_time', 'frequency', 'recipients')
     list_filter = ('creator', 'status', 'frequency')
     search_fields = ('id', 'delivery_time',)
 

@@ -11,10 +11,11 @@ class HomeView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Newsletter
     permission_required = 'mailing_creation.view_newsletter'
     template_name = 'mailing_creation/newsletter_list.html'
-    context_object_name = 'newsletters'
 
-    def get_queryset(self):
-        return Newsletter.objects.prefetch_related('newslettermessage_set')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['newsletters'] = Newsletter.objects.filter(creator_id=self.request.user.id)
+        return context
 
 
 class CreateNewsletter(LoginRequiredMixin, PermissionRequiredMixin, FormView):
@@ -99,13 +100,13 @@ class DeleteNewsletterView(LoginRequiredMixin, PermissionRequiredMixin, View):
         my_model.delete()
         return redirect("mailing_creation:home")
 
+
 class PauseTaskView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'mailing_creation.start_and_stop_newsletter'
 
     def get(self, request, model_id):
         my_model = get_object_or_404(Newsletter, id=model_id)
         task_id = my_model.task_id
-        print(my_model.status)
         if task_id:
             if my_model.status == 'paused' or my_model.status == 'completed':
                 scheduler.resume_job(task_id)

@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
@@ -29,7 +28,7 @@ class Newsletter(models.Model):
 
     task_id = models.CharField(max_length=100, blank=True, null=True)
 
-    recipients = ArrayField(models.CharField(max_length=100), default=list)
+    recipients = ArrayField(models.CharField(max_length=100), default=list, verbose_name='Получатели')
 
     def __str__(self):
         return f'Рассылка {self.pk}'
@@ -44,6 +43,7 @@ class Newsletter(models.Model):
             )
         ]
 
+
 class NewsletterMessage(models.Model):
     newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE)
     theme = models.CharField(max_length=255)
@@ -55,6 +55,7 @@ class NewsletterMessage(models.Model):
     class Meta:
         verbose_name = 'сообщение'
         verbose_name_plural = 'сообщения'
+
 
 class NewsletterLog(models.Model):
     newsletter = models.ForeignKey(NewsletterMessage, on_delete=models.CASCADE)
