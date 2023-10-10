@@ -18,7 +18,8 @@ def create_task_on_model_create(sender, instance, created, **kwargs):
             "interval",
             start_date=delivery_time,
             args=[my_model_id],  # Передаем аргументы в функцию my_task
-            seconds=freq[frequency],  # Пример: задача будет выполняться каждый день
+            seconds=freq[frequency],  # Пример: задача будет выполняться каждый день\
+            max_instances=100,
         )
         model.task_id = task.id
         model.save()

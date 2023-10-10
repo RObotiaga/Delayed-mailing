@@ -12,12 +12,12 @@
             </div>
         {% endif %}
         {% for newsletter in newsletters %}
-            {% for newsletter_message in newsletter.newslettermessage_set.all %}
+            {% for message in newsletter.newslettermessage_set.all %}
                 <div class="col-4 mb-4">
 
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Тема: {{ newsletter_message.theme }}</h5>
+                            <h5 class="card-title">Тема: {{ message.theme }}</h5>
                         </div>
                         <div class="card-body">
                             <p class="card-text {% if newsletter.status == 'completed' %}text-success{% elif newsletter.status == 'running' %}text-warning{% elif newsletter.status == 'paused' %} text-danger {% else %}text-primary{% endif %}">
