@@ -1,0 +1,26 @@
+{% extends  "mailing_creation/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Редактировать профиль</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        {{ form|crispy }}
+
+                        <button type="submit" class="btn btn-primary btn-block">Подтвердить</button>
+                        <a class="p-2 btn btn-danger btn-block"
+                           href="{% url 'users:delete_account' customuser.id %}">Удалить</a>
+                        <a class="p-2 btn btn-outline-primary btn-block" href="{% url 'users:logout' %}">Выйти</a>
+                        <a class="p-2 btn btn-outline-warning btn-block" href="{% url 'users:send_new_password' %}">Сбросить
+                            пароль</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
